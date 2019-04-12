@@ -28,6 +28,10 @@ We apply various manipulations directly on the transformable bottlenecks and dec
 
 We use our approach to rotate and deform objects before composing them into real images. The images are loaded into our application, from which a single aggregated bottleneck is computed. An interactive interface then allows the user to rotate, translate, scale and stretch the objects transforming and rendering the bottleneck in real-time. 
 
+<p align="center">
+  <img src="figures/interactive-manip.gif">
+</p>
+
 ## Code
 
 The code will be made available soon
