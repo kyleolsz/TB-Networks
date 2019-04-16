@@ -36,4 +36,13 @@ We use our approach to rotate and deform objects before composing them into real
 
 The code will be made available soon
 
-## Citation 
+## Citation
+
+If you find this useful, please cite the following:
+```
+@article{olszewski2019tbn,
+   title={Transformable Bottleneck Networks},
+   author={Olszewski, Kyle and Tulyakov, Sergey and Woodford, Oliver and Li, Hao and Luo, Linjie},
+   journal={arXiv:1904.06458},
+   year={2019}
+}
