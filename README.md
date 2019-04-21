@@ -8,7 +8,7 @@ TBN architecture consists of three parts: 2D-3D encoder followed by a resampling
 
 ![Screenshot](figures/tbn-architecture.png)
 
-## Novel View Syntehsis
+## Novel View Synthesis
 
 TBNs can be efficiently trained on a variety of diverse objects. We show TBN generated novel views of chairs, cars, and humans. We note that TBNs can generate intermediate views of objects not seen during training. To perform novel view synthesis we simply rotate the transformable bottleneck and decode it.
 
