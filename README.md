@@ -1,6 +1,6 @@
 # Transformable Bottleneck Networks
 
-This repository contains the source code for the paper [Transformable Bottleneck Networks](https://arxiv.org/abs/1904.06458) (TBNs) by [Kyle Olszewski](http://kyleolszewski.com), [Sergey Tulyakov](http://stulyakov.com), Oliver Woodford, [Linjie Luo](http://linjieluo.com), and [Hao Li](http://hao-li.com). Without any 3D supervision, TBNs learn spatially disentangled 3D bottlenecks.  TBNs achieve state-of-the-art performance on novel view synthesis and 3D reconstruction. The learnt spatial bottlenecks can be manipulated with arbitrary non-linear transformations allowing the user to perform creative object manipulations. Also check out the project [website](http://kyleolszewski.com/TB-Networks/).
+This repository contains the source code for the paper [Transformable Bottleneck Networks](https://arxiv.org/abs/1904.06458) (TBNs) by [Kyle Olszewski](http://kyleolszewski.com), [Sergey Tulyakov](http://stulyakov.com), Oliver Woodford, [Hao Li](http://hao-li.com), and [Linjie Luo](http://linjieluo.com). Without any 3D supervision, TBNs learn spatially disentangled 3D bottlenecks.  TBNs achieve state-of-the-art performance on novel view synthesis and 3D reconstruction. The learnt spatial bottlenecks can be manipulated with arbitrary non-linear transformations allowing the user to perform creative object manipulations. Also check out the project [website](http://kyleolszewski.com/TB-Networks/).
 
 ## TBN Architecture
 
