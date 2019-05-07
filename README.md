@@ -32,9 +32,33 @@ We use our approach to rotate and deform objects before composing them into real
   <img src="figures/interactive-manip.gif">
 </p>
 
-## Code
+## Instructions
 
-The code will be made available soon
+This code was tested using Python 3.7.3, PyTorch 1.0.1 and CUDA 9.0. We recommend installing PyTorch using conda as described [here](https://pytorch.org/get-started). You will also need to install the following packages: scipy, configargparse, and tensorflow.
+
+To run this code, download and extract the datasets below.
+
+## Evaluation
+
+You may evaluate the pre-trained models below by extracting them to models/ and running scripts/test_nvs_chair.sh and scripts/test_nvs_car.sh. --num_combine_views specifies how many input images are used.
+
+## Training
+
+See scripts/train_nvs_chair.sh and scripts/train_nvs_car.sh for examples of how to train our models. Running train_tbn.py with the --help parameter will provide a list of possible input parameters and their default values.
+
+## Models:
+
+[NVS Cars](https://www.dropbox.com/s/psu6ugorcrfvetp/nvs_car.pth?dl=0)
+
+[NVS Chairs](https://www.dropbox.com/s/unlqwn1lnm8tq76/nvs_chair.pth?dl=0)
+
+## Datasets
+
+Novel view synthesis and creative manipulation dataset: [Chairs](https://www.dropbox.com/s/lc01fm5o8dbrp59/nvs_chair.zip?dl=0) [Cars](https://www.dropbox.com/s/b46nobbxcbul1d2/nvs_car.zip?dl=0)
+
+3D Reconstruction Dataset: [Chairs](https://www.dropbox.com/s/82y78wyqo9xrba4/drc_chair.zip?dl=0) [Cars](https://www.dropbox.com/s/d6igpmapbsuxtad/drc_car.zip?dl=0) [Aeroplanes](https://www.dropbox.com/s/ppkig8xos1bo5an/drc_aero.zip?dl=0)
+
+Extract these files to the directory specified by the --img_path parameter. The default directory is datasets/shapenet/
 
 ## Citation
 
