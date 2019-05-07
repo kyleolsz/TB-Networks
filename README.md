@@ -46,6 +46,8 @@ You may evaluate the pre-trained models below by extracting them to models/ and 
 
 See scripts/train_nvs_chair.sh and scripts/train_nvs_car.sh for examples of how to train our models. Running train_tbn.py with the --help parameter will provide a list of possible input parameters and their default values.
 
+You can specify these parameter values either using the command line or by updating their values in train_config.ini during training or test_config.ini during evaluation.
+
 ## Models:
 
 [NVS Cars](https://www.dropbox.com/s/psu6ugorcrfvetp/nvs_car.pth?dl=0)
