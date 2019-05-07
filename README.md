@@ -50,7 +50,7 @@ See scripts/train_nvs_chair.sh and scripts/train_nvs_car.sh for examples of how 
 
 [NVS Cars](https://www.dropbox.com/s/psu6ugorcrfvetp/nvs_car.pth?dl=0)
 
-[NVS Chairs](https://www.dropbox.com/s/unlqwn1lnm8tq76/nvs_chair.pth?dl=0)
+[NVS Chairs](https://www.dropbox.com/s/p49a50s4nntkpp0/nvs_chair.pth?dl=0)
 
 ## Datasets
 
