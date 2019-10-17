@@ -407,7 +407,7 @@ class TBN(nn.Module):
         tgt_azim_transform_mode = data['tgt_azim_transform_mode'][0]
         tgt_elev_transform_mode = data['tgt_elev_transform_mode'][0]
 
-        crnt_transform_mode = tgt_azim_transform_mode - src_azim_transform_mode
+        crnt_transform_mode = src_azim_transform_mode - tgt_azim_transform_mode
 
         x = src_rgb
         if 0 < self.args.num_input_convs:
@@ -458,8 +458,8 @@ class TBN(nn.Module):
             seg_encoded_3d_vol = seg_out.unsqueeze(1)
 
         flow_field_x, flow_field_y, flow_field_z = self.get_flow_fields(crnt_transform_mode,
-                                                                        tgt_elev_transform_mode,
                                                                         src_elev_transform_mode,
+                                                                        tgt_elev_transform_mode,
                                                                         width, height, depth, encoded_3d_vol)
 
         transformed_output = apply_volume_transform(encoded_3d_vol, flow_field_x, flow_field_y, flow_field_z,
@@ -486,14 +486,14 @@ class TBN(nn.Module):
         tgt_azim_transform_mode = data['tgt_azim_transform_mode'][0]
         tgt_elev_transform_mode = data['tgt_elev_transform_mode'][0]
 
-        crnt_transform_mode = tgt_azim_transform_mode - src_azim_transform_mode
+        crnt_transform_mode = src_azim_transform_mode - tgt_azim_transform_mode
 
         depth = self.vol_dim
         height = final_seg_transformed_output.shape[2]
         width = final_seg_transformed_output.shape[3]
         flow_field_x, flow_field_y, flow_field_z = self.get_flow_fields(-crnt_transform_mode,
-                                                                        src_elev_transform_mode,
                                                                         tgt_elev_transform_mode,
+                                                                        src_elev_transform_mode,
                                                                         width, height, depth,
                                                                         final_seg_transformed_output)
 

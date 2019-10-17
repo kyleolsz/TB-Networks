@@ -25,7 +25,7 @@ class ImgDataset(Dataset):
                  dataset_name='chair', clamp_elevation=False,
                  input_width=80, input_height=80, concat_mask=False,
                  img_path='./datasets/shapenet', random_pairs=True,
-                 use_file_list=False, args=None, use_elev_transform=False):
+                 use_file_list=False, args=None, use_elev_transform=True):
         self._ids = list(ids)
         self.name = name
         self.is_train = is_train
@@ -82,13 +82,14 @@ class ImgDataset(Dataset):
 
             int_tgt = int(id.split('_')[1])
             h = id.split('_')[-1]
-            int_elev_tgt = int(h)
+            int_elev_src = [int(h)]*self.n
+            int_elev_tgt = [int(h)]
 
             ang = []
             for src_idx in range(self.n):
                 ang.append(int(self.ids_files_all[in_id][src_idx + 1].split('_')[1]))
 
-            return self.get_data_pair(id, ang, int_tgt, int_elev_tgt, h)
+            return self.get_data_pair(id, ang, int_tgt, int_elev_src, int_elev_tgt)
 
         if self.clamp_elevation:
             sample_interval = self.num_elevations
@@ -120,7 +121,7 @@ class ImgDataset(Dataset):
 
         id = self._ids[sample_interval * in_id]
 
-        elev_thresh = float(self.num_elevations) / (float(self.rotate_increment) / ang_skip + self.num_elevations)
+        elev_thresh = 0.5
         elev_transform = False
         clamp_elevation = False
 
@@ -140,35 +141,28 @@ class ImgDataset(Dataset):
 
         id = '_'.join([id_base, tgt, new_h])
         int_tgt = int(tgt)
-        int_elev_tgt = int(new_h)
+
+        idx = np.concatenate(
+            (np.linspace(-self.bound, 0, self.bound + 1)[:-1],
+             np.linspace(0, self.bound, self.bound + 1)[1:])
+        ) * ang_skip
+
+        np.random.shuffle(idx)
+        idx = idx[:self.n]
+        h = str(new_h)
 
         if elev_transform:
-            idx = np.array([0.0])
-
-            identity_thresh = 0.00
-            if np.random.uniform(0, 1, 1)[0] < identity_thresh:
-                elev_offset = 0
-            else:
-                elevations = [10, 20]
-                np.random.shuffle(elevations)
-                elev_offset = elevations[0]
-
-            h = str((int(new_h) + (elev_offset)) % (30))
+            int_elev_src = 10 * np.random.randint(0, 3, self.n)
+            int_elev_tgt = [int(new_h)]
         else:
-            idx = np.concatenate(
-                (np.linspace(-self.bound, 0, self.bound + 1)[:-1],
-                 np.linspace(0, self.bound, self.bound + 1)[1:])
-            ) * ang_skip
-
-            np.random.shuffle(idx)
-            idx = idx[:self.n]
-            h = str(new_h)
+            int_elev_src = [int(new_h)]*self.n
+            int_elev_tgt = [int(new_h)]
 
         ang = (idx + int_tgt).astype(np.int32)
 
-        return self.get_data_pair(id, ang, int_tgt, int_elev_tgt, h)
+        return self.get_data_pair(id, ang, int_tgt, int_elev_src, int_elev_tgt)
 
-    def get_data_pair(self, id, ang, int_tgt, int_elev_tgt, h='0'):
+    def get_data_pair(self, id, ang, int_tgt, int_elev_src, int_elev_tgt):
         image = self.readImageToArray(id)
         mask = 1 - (np.sum(image, axis=-1) >= 2.997)
         if self.args.use_tgt_bg_noise:
@@ -182,7 +176,7 @@ class ImgDataset(Dataset):
             image = np.concatenate((image, np.expand_dims(mask, -1)), axis=-1)
 
         tgt_azim_transform_mode = (self.rotate_increment - int_tgt) % self.rotate_increment
-        tgt_elev_transform_mode = int(int_elev_tgt / self.elev_increment)
+        tgt_elev_transform_mode = int(int_elev_tgt[0] / self.elev_increment)
 
         data = {}
 
@@ -204,15 +198,14 @@ class ImgDataset(Dataset):
         data['src_azim_transform_mode'] = []
         data['src_elev_transform_mode'] = []
 
-        for a in ang:
+        for idx, a in enumerate(ang):
             id_base = id.split('_')[0]
 
             int_src = a % self.rotate_increment
 
             src = str(int_src)
-            int_elev_src = int(h)
 
-            id_src = '_'.join([id_base, src, str(h)])
+            id_src = '_'.join([id_base, src, str(int_elev_src[idx])])
             image_tmp = self.readImageToArray(id_src)
             mask_tmp = 1 - (np.sum(image_tmp, axis=-1) >= 2.997)
 
@@ -227,7 +220,7 @@ class ImgDataset(Dataset):
                 image_tmp = np.concatenate((image_tmp, np.expand_dims(mask_tmp, -1)), axis=-1)
 
             src_azim_transform_mode = (self.rotate_increment - int_src) % self.rotate_increment
-            src_elev_transform_mode = int(int_elev_src / self.elev_increment)
+            src_elev_transform_mode = int(int_elev_src[idx] / self.elev_increment)
 
             src_image = torch.Tensor(image_tmp.transpose(2, 0, 1))[:, self.args.crop_y_dim:(self.args.final_height-self.args.crop_y_dim),
                                                                       self.args.crop_x_dim:(self.args.final_width-self.args.crop_x_dim)]
