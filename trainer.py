@@ -202,7 +202,6 @@ class TBNTrainer:
     def train(self):
         self.best_epoch_raw_ssim_loss = -1e19
 
-        self.model.eval()
         had_training_error = False
 
         if self.args.use_amp:
@@ -251,6 +250,10 @@ class TBNTrainer:
             disc_loss_sum = 0.0
 
             for (i, data) in enumerate(self.train_loader, 0):
+                self.model.train()
+                if self.args.use_gan and 0.0 < self.args.w_disc_gan_label:
+                    self.discriminator.train()
+
                 self.batch_num += 1
 
                 if ((0) != (self.args.test_interval)) and ((0) == ((self.batch_num) % (self.args.test_interval))):
@@ -274,12 +277,12 @@ class TBNTrainer:
                 if 0 == (i + 1) % self.args.log_interval:
                     print('start ' + str(i + 1) + ' of ' + str(self.n_img / self.args.batch_size))
 
+                model_out = self.model(num_inputs_to_use, data)
+
                 if self.args.use_gan and 0.0 < self.args.w_disc_gan_label:
                     # reset training params
-                    self.discriminator.train()
                     self.disc_optimizer.zero_grad()
 
-                    model_out = self.model(num_inputs_to_use, data)
                     disc_loss = self.compute_disc_losses(model_out, data, loss_type='train')
 
                     # update model
@@ -289,13 +292,10 @@ class TBNTrainer:
                     else:
                         disc_loss.backward()
                     self.disc_optimizer.step()
-                    self.discriminator.eval()
 
                 # reset training params
-                self.model.train()
                 self.optimizer.zero_grad()
 
-                model_out = self.model(num_inputs_to_use, data)
                 loss = self.compute_gen_losses(model_out, data, loss_type='train')
 
                 # update model
@@ -305,7 +305,6 @@ class TBNTrainer:
                 else:
                     loss.backward()
                 self.optimizer.step()
-                self.model.eval()
 
                 loss_item = loss.item()
                 if self.args.use_gan and 0.0 < self.args.w_disc_gan_label:
@@ -393,6 +392,10 @@ class TBNTrainer:
         self.test_batch_num += 1
 
         self.model.eval()
+
+        if self.args.use_gan:
+            self.discriminator.eval()
+
         with torch.no_grad():
             if use_file_tuples:
                 targetLabel = "Static_Images"
