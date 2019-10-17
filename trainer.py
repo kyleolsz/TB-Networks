@@ -870,3 +870,9 @@ class TBNTrainer:
                                                  betas=self.adam_betas, eps=self.adam_eps)
                 disc_opt_path = path[:-4] + '_disc_opt.pth'
                 self.disc_optimizer.load_state_dict(torch.load(disc_opt_path).state_dict())
+        else:
+            self.optimizer = optim.Adam(self.model.parameters(), lr=args.learning_rate,
+                                        betas=self.adam_betas, eps=self.adam_eps)
+            if self.args.use_gan and load_disc:
+                self.disc_optimizer = optim.Adam(self.discriminator.parameters(), lr=args.disc_learning_rate,
+                                                 betas=self.adam_betas, eps=self.adam_eps)
