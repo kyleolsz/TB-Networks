@@ -14,6 +14,11 @@ def main():
     if False == args.use_seg3d_proxy:
         args.w_gen_seg3d = 0.0
 
+    output_dir_path = os.path.dirname(os.path.realpath(args.model_path))
+    if not os.path.isdir(output_dir_path):
+        print('creating ' + str(output_dir_path))
+        os.path.makedirs(output_dir_path)
+
     model = TBNTrainer(args)
     load_disc = (args.use_gan and args.load_discriminator)
     if args.load_model and '' != args.input_model_file:
