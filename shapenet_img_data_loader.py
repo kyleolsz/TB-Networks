@@ -25,7 +25,7 @@ class ImgDataset(Dataset):
                  dataset_name='chair', clamp_elevation=False,
                  input_width=80, input_height=80, concat_mask=False,
                  img_path='./datasets/shapenet', random_pairs=True,
-                 use_file_list=False, args=None, use_elev_transform=True):
+                 use_file_list=False, args=None):
         self._ids = list(ids)
         self.name = name
         self.is_train = is_train
@@ -33,7 +33,6 @@ class ImgDataset(Dataset):
         self.n = n
         self.args = args
         self.use_file_list = use_file_list
-        self.use_elev_transform = use_elev_transform
 
         if self.args.cull_identity_transform:
             self.bound = int(360 / (ang_skip * ang_interval) + 1 - 2)
@@ -121,11 +120,10 @@ class ImgDataset(Dataset):
 
         id = self._ids[sample_interval * in_id]
 
-        elev_thresh = 0.5
         elev_transform = False
         clamp_elevation = False
 
-        if self.use_elev_transform and np.random.uniform(0, 1, 1)[0] < elev_thresh:
+        if self.args.use_elev_transform and np.random.uniform(0, 1, 1)[0] < self.args.elev_thresh:
             elev_transform = True
         else:
             clamp_elevation = self.clamp_elevation

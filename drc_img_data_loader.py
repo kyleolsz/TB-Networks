@@ -116,10 +116,10 @@ class ImgDataset(Dataset):
             img_pos_params = [s.strip() for s in fp.readlines() if s]
 
         tgt_params = img_pos_params[int_tgt].split(' ')
-        azimuth   = float(tgt_params[0])
+        azimuth = float(tgt_params[0])
         elevation = float(tgt_params[1])
 
-        tgt_azim_transform_mode      =   azimuth
+        tgt_azim_transform_mode = azimuth
         tgt_elev_transform_mode = elevation
 
         data = {}

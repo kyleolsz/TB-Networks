@@ -157,6 +157,10 @@ class ArgLoader(object):
                             help='Factor by which to reduce number of features used in the encoder.')
         parser.add_argument('--decode_feature_scale_factor', type=int, default=1,
                             help='Factor by which to reduce number of features used in the decoder.')
+        parser.add_argument('--use_elev_transform', type=parse_boolean, default=True,
+                            help='Enable elevation variation in input and output images.')
+        parser.add_argument('--elev_transform_threshold', type=float, default=0.5,
+                            help='Probability of using variable elevations in input and output images.')
 
         args = parser.parse_args()
 
