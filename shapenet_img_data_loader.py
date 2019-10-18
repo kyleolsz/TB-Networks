@@ -121,18 +121,17 @@ class ImgDataset(Dataset):
         id = self._ids[sample_interval * in_id]
 
         elev_transform = False
-        clamp_elevation = False
 
-        if self.args.use_elev_transform and np.random.uniform(0, 1, 1)[0] < self.args.elev_thresh:
+        if self.args.use_elev_transform and np.random.uniform(0, 1, 1)[0] < self.args.elev_transform_threshold:
             elev_transform = True
         else:
-            clamp_elevation = self.clamp_elevation
+            elev_transform = False
 
         id_base = id.split('_')[0]
         tgt = id.split('_')[1]
         h = id.split('_')[-1]
 
-        if clamp_elevation:
+        if self.clamp_elevation:
             new_h = '0'
         else:
             new_h = h

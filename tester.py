@@ -64,9 +64,6 @@ class TBNTester:
         if self.args.print_output and not os.path.exists(self.args.img_out_dir):
             os.makedirs(self.args.img_out_dir)
 
-        if 0 != self.args.log_interval and not os.path.exists(self.args.log_folder):
-            os.makedirs(self.args.log_folder)
-
         self.num_eval_combine_views = self.args.num_combine_views
         if args.dataset_name == 'chair' or args.dataset_name == 'car':
             import shapenet_img_data_loader as dataset
@@ -146,7 +143,6 @@ class TBNTester:
 
         self.total_disc_loss_sum = 0.0
 
-        self.logger = Logger(self.args.log_folder)
         self.logs = self.init_logs()
 
     @staticmethod
@@ -227,12 +223,15 @@ class TBNTester:
                         src_seg_image = data['src_seg_image']
                         tgt_seg_image = data['tgt_seg_image'][0]
 
-                        src_cat_images = torch.cat((src_rgb_image[0], torch.cat((src_seg_image[0], src_seg_image[0], src_seg_image[0]), 1)),
-                                                   3)
-                        for view_idx in range(1, num_inputs_to_use):
-                            src_cat_images = torch.cat((src_cat_images, src_rgb_image[view_idx],
-                                                        torch.cat((src_seg_image[view_idx], src_seg_image[view_idx], src_seg_image[view_idx]),
-                                                                  1)), 3)
+                        src_cat_images = None
+                        for view_idx in range(0, num_inputs_to_use):
+                            if src_cat_images is None:
+                                src_cat_images = torch.cat((src_rgb_image[0], torch.cat((src_seg_image[0], src_seg_image[0], src_seg_image[0]), 1)),
+                                                           3)
+                            else:
+                                src_cat_images = torch.cat((src_cat_images, src_rgb_image[view_idx],
+                                                            torch.cat((src_seg_image[view_idx], src_seg_image[view_idx], src_seg_image[view_idx]),
+                                                                      1)), 3)
 
                             tgt_seg_rgb = torch.cat((tgt_seg_image, tgt_seg_image, tgt_seg_image), 1)
                             gen_tgt_seg3d = model_out[2][0]
@@ -241,9 +240,12 @@ class TBNTester:
                                                     model_out[0][:, 0:3, :, :], tgt_rgb_image[:, 0:3, :, :],
                                                     gen_tgt_seg3d_rgb[:, 0:3, :, :], tgt_seg_rgb[:, 0:3, :, :]), 3)
                     else:
-                        src_cat_images = src_rgb_image[0]
-                        for view_idx in range(1, num_inputs_to_use):
-                            src_cat_images = torch.cat((src_cat_images, src_rgb_image[view_idx]), 3)
+                        src_cat_images = None
+                        for view_idx in range(0, num_inputs_to_use):
+                            if src_cat_images is None:
+                                src_cat_images = src_rgb_image[0]
+                            else:
+                                src_cat_images = torch.cat((src_cat_images, src_rgb_image[view_idx]), 3)
 
                             cat_images = torch.cat((src_cat_images[:, 0:3, :, :],
                                                     model_out[0][:, 0:3, :, :], tgt_rgb_image[:, 0:3, :, :]), 3)

@@ -756,7 +756,7 @@ class TBNTrainer:
     def compute_disc_losses(self, model_out, data, loss_type='train'):
         tgt_rgb_image = data['tgt_rgb_image'][0]
 
-        fake_labels, _ = self.discriminator(model_out[0])
+        fake_labels, _ = self.discriminator(model_out[0].detach())
         real_labels, _ = self.discriminator(tgt_rgb_image)
         self.ones = self.ones_like(fake_labels, device=self.device)
         self.zeros = self.zeros_like(fake_labels, device=self.device, val=self.fake_val)
@@ -874,8 +874,8 @@ class TBNTrainer:
                 disc_opt_path = path[:-4] + '_disc_opt.pth'
                 self.disc_optimizer.load_state_dict(torch.load(disc_opt_path).state_dict())
         else:
-            self.optimizer = optim.Adam(self.model.parameters(), lr=args.learning_rate,
+            self.optimizer = optim.Adam(self.model.parameters(), lr=self.args.learning_rate,
                                         betas=self.adam_betas, eps=self.adam_eps)
             if self.args.use_gan and load_disc:
-                self.disc_optimizer = optim.Adam(self.discriminator.parameters(), lr=args.disc_learning_rate,
+                self.disc_optimizer = optim.Adam(self.discriminator.parameters(), lr=self.args.disc_learning_rate,
                                                  betas=self.adam_betas, eps=self.adam_eps)
