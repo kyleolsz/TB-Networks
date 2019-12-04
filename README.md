@@ -69,6 +69,7 @@ If you find this useful, please cite the following:
 @article{olszewski2019tbn,
    title={Transformable Bottleneck Networks},
    author={Olszewski, Kyle and Tulyakov, Sergey and Woodford, Oliver and Li, Hao and Luo, Linjie},
-   journal={arXiv:1904.06458},
+   journal={The IEEE International Conference on Computer Vision (ICCV)},
+   month={Nov},
    year={2019}
 }
