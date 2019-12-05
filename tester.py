@@ -219,7 +219,7 @@ class TBNTester:
                     src_rgb_image = data['src_rgb_image']
                     tgt_rgb_image = data['tgt_rgb_image'][0]
 
-                    if self.args.use_seg3d_proxy:
+                    if self.args.print_seg_output and self.args.use_seg3d_proxy:
                         src_seg_image = data['src_seg_image']
                         tgt_seg_image = data['tgt_seg_image'][0]
 

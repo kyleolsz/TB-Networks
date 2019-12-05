@@ -41,6 +41,8 @@ class ArgLoader(object):
                             help='Device ID of GPU to use. Use 0 when training with with --use_data_parallel enabled for multi-gpu training.')
         parser.add_argument('--print_output', type=parse_boolean, default=False,
                             help='Enables printing of output images and/or occupancy volumes during evaluation.')
+        parser.add_argument('--print_seg_output', type=parse_boolean, default=False,
+                            help='Enables printing of segmentation masks when --print_output is enabled.')
         parser.add_argument('--print_occupancy_volume', type=parse_boolean, default=False,
                             help='Enables printing of occupancy volumes during evaluation when --print_output is enabled.')
         parser.add_argument('--img_out_dir', type=str, default='imgs.out/',
