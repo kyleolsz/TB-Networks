@@ -50,9 +50,9 @@ You can specify these parameter values either using the command line or by updat
 
 ## Models:
 
-[NVS Cars](https://www.dropbox.com/s/mkmi6ya0w673ldv/nvs_car.pth?dl=0)
+[NVS Cars](https://www.dropbox.com/s/rfam89wmqrnptd5/nvs_car.pth?dl=0)
 
-[NVS Chairs](https://www.dropbox.com/s/6147ael5apoljos/nvs_chair.pth?dl=0)
+[NVS Chairs](https://www.dropbox.com/s/ik2fyb2idn4p23a/nvs_chair.pth?dl=0)
 
 ## Datasets
 
