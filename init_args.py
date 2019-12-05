@@ -21,9 +21,9 @@ class ArgLoader(object):
 
         parser.add_argument('--model_path', type=str, default='output/Models/output_model.pth',
                             help='Path for output model file.')
-        parser.add_argument('--input_height', type=int, default=256,
+        parser.add_argument('--input_height', type=int, default=160,
                             help='Height of images used as input to network.')
-        parser.add_argument('--input_width', type=int, default=256,
+        parser.add_argument('--input_width', type=int, default=160,
                             help='Width of images used as input to network.')
         parser.add_argument('--epochs', type=int, default=3000,
                             help='Number of epochs for training.')
@@ -87,7 +87,7 @@ class ArgLoader(object):
                             help='Number of input channels for generator. 3 for RGB, 4 for RGBA.')
         parser.add_argument('--num_output_channels', type=int, default=4,
                             help='Number of output channels for generator. 3 for RGB, 4 for RGBA.')
-        parser.add_argument('--num_features', type=int, default=640,
+        parser.add_argument('--num_features', type=int, default=800,
                             help='Number of 2D feature maps created by the 2D encoder. These maps will be reshaped to produce a 3D volume with a vector of size (num_features/vol_dim) in each cell.')
         parser.add_argument('--vol_dim', type=int, default=0,
                             help='Resolution of volumetric bottleneck. 0 means infer volume dimension from other params.')
@@ -111,9 +111,9 @@ class ArgLoader(object):
                             help='Determines whether identity transforms are included during training.')
         parser.add_argument('--use_ls_gan', type=parse_boolean, default=False,
                             help='Enables use of LS-GAN loss when --use_gan is enabled.')
-        parser.add_argument('--num_input_convs', type=int, default=2,
+        parser.add_argument('--num_input_convs', type=int, default=1,
                             help='Number of additional input convolutions to apply. Each additional convolution reduces the input size by a factor of 2.')
-        parser.add_argument('--num_output_deconvs', type=int, default=2,
+        parser.add_argument('--num_output_deconvs', type=int, default=1,
                             help='Number of additional output convolutions to apply. Each additional convolution increases the output size by a factor of 2.')
         parser.add_argument('--upsample_output', type=parse_boolean, default=True,
                             help='Whether to upsample output to final resolution specified by --final_width and --final_height before measuring loss.')
